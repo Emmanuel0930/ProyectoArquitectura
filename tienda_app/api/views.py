@@ -31,6 +31,7 @@ class CompraAPIView(APIView):
                 cantidad=datos.get('cantidad', 1),
                 direccion=datos['direccion_envio'],
                 usuario=usuario,
+                origen='API',
             )
 
             return Response(

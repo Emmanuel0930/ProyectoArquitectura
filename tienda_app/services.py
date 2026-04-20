@@ -20,7 +20,7 @@ class CompraService:
         total = CalculadorImpuestos.obtener_total_con_iva(libro.precio)
         return {"libro": libro, "total": total}
 
-    def ejecutar_compra(self, libro_id, cantidad=1, direccion="", usuario=None):
+    def ejecutar_compra(self, libro_id, cantidad=1, direccion="", usuario=None, origen="DESCONOCIDO"):
         libro = get_object_or_404(Libro, id=libro_id)
         inv = get_object_or_404(Inventario, libro=libro)
 
@@ -36,7 +36,16 @@ class CompraService:
             .build()
         )
 
-        pago_exitoso = self.procesador_pago.pagar(orden.total)
+        stock_antes = inv.cantidad
+        stock_despues = inv.cantidad - cantidad
+
+        pago_exitoso = self.procesador_pago.pagar(
+            orden.total,
+            origen=origen,
+            libro_id=libro_id,
+            stock_antes=stock_antes,
+            stock_despues=stock_despues,
+        )
         if not pago_exitoso:
             orden.delete()
             raise Exception("La transacción fue rechazada por el banco.")

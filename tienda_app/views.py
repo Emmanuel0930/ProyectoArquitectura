@@ -25,7 +25,7 @@ class CompraView(View):
     def post(self, request, libro_id):
         servicio = self.setup_service()
         try:
-            total = servicio.ejecutar_compra(libro_id, cantidad=1)
+            total = servicio.ejecutar_compra(libro_id, cantidad=1, origen='HTML')
             return render(
                 request,
                 self.template_name,
