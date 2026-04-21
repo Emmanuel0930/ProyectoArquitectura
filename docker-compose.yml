@@ -13,7 +13,7 @@ services:
       - POSTGRES_PASSWORD=secret_password
 
   # Servicio de tu API Django
-  web:
+  web_django:
     build: .
     command: gunicorn Tienda.wsgi:application --bind 0.0.0.0:8000
     volumes:
@@ -39,7 +39,7 @@ services:
       volumes:
         - ./nginx.conf:/etc/nginx/conf.d/default.conf
       depends_on:
-        - web
+        - web_django
         - pagos_flask
       
 # Definición del volumen persistente
