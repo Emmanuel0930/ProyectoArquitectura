@@ -4,6 +4,8 @@ from django.views import View
 from .infra.factories import PaymentFactory
 from .services import CompraService
 
+from django.http import JsonResponse
+from .models import Libro
 
 class CompraView(View):
     """
@@ -36,3 +38,8 @@ class CompraView(View):
             )
         except (ValueError, Exception) as e:
             return render(request, self.template_name, {'error': str(e)}, status=400)
+
+
+def lista_productos(request):
+    libros = list(Libro.objects.values())
+    return JsonResponse(libros, safe=False)
