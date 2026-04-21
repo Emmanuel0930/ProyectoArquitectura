@@ -40,6 +40,18 @@ class CompraView(View):
             return render(request, self.template_name, {'error': str(e)}, status=400)
 
 
+
 def lista_productos(request):
-    libros = list(Libro.objects.values())
-    return JsonResponse(libros, safe=False)
+    data = [
+        {
+            "id": 1,
+            "titulo": "Clean Code en Python",
+            "precio": 150.0
+        },
+        {
+            "id": 2,
+            "titulo": "Arquitectura de Software",
+            "precio": 200.0
+        }
+    ]
+    return JsonResponse(data, safe=False)
